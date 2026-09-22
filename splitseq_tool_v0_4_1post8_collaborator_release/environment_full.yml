@@ -1,0 +1,18 @@
+name: splitseq-tool
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.10
+  - pyyaml
+  - matplotlib
+  - pytest
+  - star
+  - subread
+  - samtools
+  - umi_tools
+  - kallisto
+  - bustools
+  - kb-python
+  - pip
+  - setuptools>=61

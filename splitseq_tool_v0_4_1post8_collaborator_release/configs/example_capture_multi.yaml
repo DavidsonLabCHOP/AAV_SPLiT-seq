@@ -1,0 +1,25 @@
+barcodes:
+  mrna_round1: /path/to/Round1_RNA_barcodes.txt
+  capture_round1: /path/to/Round1_capture_barcodes.txt
+
+defaults:
+  keep_all_intermediates: false
+  capture_mismatches: 1
+  count_mode: reads
+  cell_filter: keep-list
+  round1_conversion: true
+
+capture:
+  multi:
+    capture_mode: greenlist
+    green_list: /path/to/approved_capture_barcodes.txt
+    flank_left: AACCGGTTAACC
+    flank_right: TTGGCCAATTGG
+    target_length: 12
+
+samples:
+  sample_01:
+    capture_merged_fastq: /path/to/capture/MergedCells_passing.fastq
+    mrna_cell_keep_list: /path/to/rna/cellIDs_keep.txt
+    outputs:
+      capture-multi: results/sample_01/capture_multi

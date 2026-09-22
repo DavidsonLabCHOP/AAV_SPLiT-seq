@@ -1,0 +1,56 @@
+project:
+  name: example_project
+  output_dir: results
+
+barcodes:
+  mrna_round1: /path/to/Round1_RNA_barcodes.txt
+  capture_round1: /path/to/Round1_capture_barcodes.txt
+  round2: /path/to/Round2_barcodes.txt
+  round3: /path/to/Round3_barcodes.txt
+
+references:
+  star_index: /path/to/STAR_index
+  saf_file: /path/to/genes.saf
+  kallisto_index: /path/to/kallisto_transcriptome.idx
+  t2g_file: /path/to/transcript_to_gene.tsv
+
+defaults:
+  keep_all_intermediates: false
+  barcode_mismatches: 1
+  capture_mismatches: 1
+  count_mode: reads
+  cell_filter: keep-list
+  round1_conversion: true
+  include_zero_cells: false
+  threads: 10
+  possible_cell_ids: 442368
+
+capture:
+  single:
+    target_sequence: ACGTACGTACGT
+    check_revcomp: false
+    use_flanks: false
+  multi:
+    capture_mode: greenlist
+    green_list: /path/to/approved_capture_barcodes.txt
+    flank_left: AACCGGTTAACC
+    flank_right: TTGGCCAATTGG
+    target_length: 12
+
+samples:
+  sample_01:
+    mrna_r1: /path/to/sample_01_R1.fastq.gz
+    mrna_r2: /path/to/sample_01_R2.fastq.gz
+    capture_merged_fastq: /path/to/sample_01_capture/MergedCells_passing.fastq
+    mrna_cell_keep_list: /path/to/sample_01_rna/cellIDs_keep.txt
+    outputs:
+      demux: results/sample_01/rna_demux
+      rna-star: results/sample_01/rna
+      capture-single: results/sample_01/capture_single
+      capture-multi: results/sample_01/capture_multi
+      paired-qc: results/sample_01/paired_qc
+
+rna:
+  kb:
+    workflow: standard
+    strand: unstranded

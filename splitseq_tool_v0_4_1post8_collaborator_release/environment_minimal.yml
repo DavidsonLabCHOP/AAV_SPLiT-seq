@@ -1,0 +1,10 @@
+name: splitseq-tool-minimal
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pyyaml
+  - matplotlib
+  - pytest
+  - pip
+  - setuptools>=61

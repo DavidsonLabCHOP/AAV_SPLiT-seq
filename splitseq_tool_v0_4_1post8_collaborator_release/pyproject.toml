@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "splitseq-tool"
+version = "0.4.1.post8"
+description = "Command-line toolkit for SPLiT-seq RNA and capture-sequence processing"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "pyyaml>=6.0",
+  "matplotlib>=3.5",
+]
+
+[project.scripts]
+splitseq-tool = "splitseq_tool.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["splitseq_tool*"]
+exclude = ["configs*", "docs*", "scripts*"]
