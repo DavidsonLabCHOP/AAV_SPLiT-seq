@@ -386,3 +386,36 @@ External STAR/featureCounts/UMI-tools and kallisto/bustools executions still req
 - `docs/qc_reporting.md`
 - `docs/validation.md`
 - `CHANGELOG.md`
+
+## Running the small benchmarking dataset
+
+Small example datasets are included with splitseq-tool (in mini-data directory) so that users can test the complete pipeline before running their own sequencing data. These files contain only small number of synthetic reads and are are intended for verification that the software, configuration files, barcode handling, and alignment steps are working correctly.
+
+1. Set up and activate the environment, and install the tool as described above.
+2. download the mouse reference genome and annotation
+   - The example datasets were generated using the GRCm38 (mm10) mouse reference genome. Both files readily available on GENCODE, Ensembl and other platforms.
+   - If the files are compressed, decompress them before building the STAR index:
+   ```bash
+   gunzip Mus_musculus.GRCm38.dna.primary_assembly.fa.gz
+   gunzip Mus_musculus.GRCm38.*.gtf.gz
+   ```
+3. build the STAR genome index
+   - By default, splitseq-tool uses STAR for alignment. The STAR genome index only needs to be generated once and can then be reused for all datasets analyzed with the same genome/annotation
+   - Then simply run this:
+   ```bash
+   STAR \
+    --runMode genomeGenerate \
+    --runThreadN 8 \  #adjust number of threads as necessary
+    --genomeDir GRCm38_STAR_index \  
+    --genomeFastaFiles Mus_musculus.GRCm38.dna.primary_assembly.fa \  # this name might change depending of platform where you obtained the genome
+    --sjdbGTFfile Mus_musculus.GRCm38.<release>.gtf \ # this name might change depending of platform where you obtained the genome
+    --sjdbOverhang 99
+   ```
+   - --runThreadN can be adjusted for the number of CPU cores available on your system. The --sjdbOverhang value should ideally be read length − 1; 99 is appropriate for 100-nt reads. If your reads have a different length, this value can be changed accordingly.
+4. Locate example project YAML (e.g. project_mini_single_capture_example.yaml) file provided and replace any generic paths with your actual paths as necessary.
+5. run the supplied mini dataset using the provided bash script and edited YAML:
+   bash run_project_mini_single_capture_from_yaml.sh
+   or
+   ./run_project_mini_single_capture_from_yaml.sh project_mini_single_capture_example.yaml
+
+   
