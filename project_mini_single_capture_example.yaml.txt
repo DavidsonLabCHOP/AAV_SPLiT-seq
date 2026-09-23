@@ -1,0 +1,129 @@
+# ============================================================================
+# SPLiT-seq Tool project YAML
+#
+# Designed for splitseq-tool v0.4.1.post8.
+#
+#
+# EDIT paths marked <path_to_your_directory> (or as needed) before running. 
+#============================================================================
+
+project:
+  name: mini_single_capture_test
+  output_dir: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results
+
+barcodes:
+  mrna_round1: /<path_to_your_directory>/tool/barcodes/Round1_mRNA_only_barcodes.txt
+  capture_round1: /<path_to_your_directory>/tool/barcodes/Round1_AAV_only_barcodes.txt
+  round2: /<path_to_your_directory>/tool/barcodes/Round2_barcodes_new4.txt
+  round3: /<path_to_your_directory>/tool/barcodes/Round3_barcodes_new4.txt
+
+references:
+  star_index: /<path_to_your_directory>/tool/genome/GRCm38/
+  saf_file: /<path_to_your_directory>/tool/genome/GRCm38_genes.saf
+
+defaults:
+  keep_all_intermediates: false
+  barcode_mismatches: 1
+  ambiguous_policy: fail
+  cell_threshold_mode: umis
+  capture_mismatches: 1
+  count_mode: reads
+  cell_filter: keep-list
+  round1_conversion: true
+  legacy_output: true
+  include_zero_cells: false
+  quality_threshold: 30
+  phred_offset: 33
+  threads: 4
+  possible_cell_ids: 442368
+
+capture:
+  single:
+    target_sequence: TAAAGGTGAACG
+    capture_mismatches: 1
+    use_flanks: true
+    flank_left: CGAAACACCG
+    flank_right: GTAATGAT
+    check_revcomp: false
+    count_mode: reads
+    legacy_output: true
+
+samples:
+
+  "2_2_mini_rna":
+    demux:
+      r1_fastq: /<path_to_your_directory>/mini-data/single-plex/single_mini_mRNA_R1_001.fastq
+      r2_fastq: /<path_to_your_directory>/mini-data/single-plex/single_mini_mRNA_R2_001.fastq
+      round1: /<path_to_your_directory>/tool/barcodes/Round1_mRNA_only_barcodes.txt
+      round2: /<path_to_your_directory>/tool/barcodes/Round2_barcodes_new4.txt
+      round3: /<path_to_your_directory>/tool/barcodes/Round3_barcodes_new4.txt
+      output_dir: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/01_mRNA_demux
+      min_cell_count: 200
+      cell_threshold_mode: umis
+      barcode_mismatches: 1
+      quality_threshold: 30
+      phred_offset: 33
+
+    rna-star:
+      merged_fastq: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/01_mRNA_demux/MergedCells_passing.fastq
+      output_dir: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/02_mRNA_STAR
+      star_index: /<path_to_your_directory>/tool/genome/GRCm38/
+      saf_file: /<path_to_your_directory>/tool/genome/GRCm38_genes.saf
+      threads: 4
+      star_mismatch_nover_lmax: 0.05
+      align_intron_max: 20000
+
+  "2_2_mini_capture_demux":
+    demux:
+      r1_fastq: /<path_to_your_directory>/mini-data/single-plex/single_mini_AAV_R1_3.fastq
+      r2_fastq: /<path_to_your_directory>/mini-data/single-plex/single_mini_AAV_R2.fastq
+      round1: /<path_to_your_directory>/tool/barcodes/Round1_AAV_only_barcodes.txt
+      round2: /<path_to_your_directory>/tool/barcodes/Round2_barcodes_new4.txt
+      round3: /<path_to_your_directory>/tool/barcodes/Round3_barcodes_new4.txt
+      output_dir: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/03_capture_demux
+      min_cell_count: 1
+      cell_threshold_mode: umis
+      barcode_mismatches: 1
+      quality_threshold: 30
+      phred_offset: 33
+
+  "2_2_mini":
+    capture-single:
+      input_fastq: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/03_capture_demux/MergedCells_passing.fastq
+      output_dir: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/04_single_capture
+      cell_keep_list: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/02_mRNA_STAR/2_2_mini_rna/rna_star/cellIDs_keep.txt
+      cell_filter: keep-list
+      round1_conversion: true
+      mrna_round1: /<path_to_your_directory>/tool/barcodes/Round1_mRNA_only_barcodes.txt
+      capture_round1: /<path_to_your_directory>/tool/barcodes/Round1_AAV_only_barcodes.txt
+      target_sequence: TAAAGGTGAACG
+      capture_mismatches: 1
+      use_flanks: true
+      flank_left: CGAAACACCG
+      flank_right: GTAATGAT
+      check_revcomp: false
+      count_mode: reads
+      legacy_output: true
+      include_zero_cells: false
+      quality_threshold: 30
+      phred_offset: 33
+
+    paired-qc:
+      mrna_fastq: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/01_mRNA_demux/MergedCells_passing.fastq
+      capture_fastq: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/03_capture_demux/MergedCells_passing.fastq
+      output_dir: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/05_paired_QC
+      round1_conversion: true
+      mrna_round1: /<path_to_your_directory>/tool/barcodes/Round1_mRNA_only_barcodes.txt
+      capture_round1: /<path_to_your_directory>/tool/barcodes/Round1_AAV_only_barcodes.txt
+      possible_cell_ids: 442368
+
+    qc-report:
+      output_dir: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/06_QC_report
+      demux_summary: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/01_mRNA_demux/demux_summary.tsv
+      rna_counts_matrix: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/02_mRNA_STAR/2_2_mini_rna/rna_star/counts.tsv.gz
+      capture_summary: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/04_single_capture/2_2_mini.single_capture_summary.tsv
+      capture_counts_wide: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/04_single_capture/2_2_mini.single_capture_counts.wide.tsv
+      paired_summary: /<path_to_your_directory>/mini-data/single-plex/splitseq_tool_2_2_mini_results/05_paired_QC/2_2_mini.paired_cellID_qc.summary.tsv
+      min_capture_count: 1
+      min_rna_counts: 0
+      min_genes: 0
