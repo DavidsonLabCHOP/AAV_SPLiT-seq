@@ -414,8 +414,34 @@ Small example datasets are included with splitseq-tool (in mini-data directory) 
    - --runThreadN can be adjusted for the number of CPU cores available on your system. The --sjdbOverhang value should ideally be read length − 1; 99 is appropriate for 100-nt reads. If your reads have a different length, this value can be changed accordingly.
 4. Locate example project YAML (e.g. project_mini_single_capture_example.yaml) file provided and replace any generic paths with your actual paths as necessary.
 5. run the supplied mini dataset using the provided bash script and edited YAML:
+   ```bash
    bash run_project_mini_single_capture_from_yaml.sh
+   ```
    or
+   ```bash
    ./run_project_mini_single_capture_from_yaml.sh project_mini_single_capture_example.yaml
+   ```
+6. The analysis should process very quickly and you should see following message:
+```bash
+======================================================================
+SPLiT-seq Tool YAML-driven mini single-capture benchmark
+======================================================================
+Config: project_mini_single_capture_example.yaml
 
+=== 1/6 RNA demux ===
+
+=== 2/6 RNA STAR -> featureCounts -> UMI-tools ===
+
+=== 3/6 Capture demux ===
+
+=== 4/6 Single-capture counting ===
+
+=== 5/6 Paired cell-ID QC ===
+
+=== 6/6 Combined QC report ===
+
+======================================================================
+Done.
+======================================================================
+ 
    
